@@ -9,23 +9,15 @@ function preload(){
 
 
 function setup(){
- canvas = createCanvas(600, 500)
+ canvas = createCanvas(900, 700)
  canvas.center()
- video1 = createCapture(VIDEO)
- video1.hide()
  objDetector = ml5.objectDetector("cocossd", modelLoaded)
-}
-
-function start(){
-    objDetector = ml5.objectDetector("cocossd", modelLoaded)
-    document.getElementById("status").innerHTML = "detectando objetos..."
-
 }
 
 function modelLoaded(){
     console.log("modelo carregado!")
     status = true;
-    objDetector.detect(video1, gotResult);
+    objDetector.detect(img, gotResult);
 }
 
 function gotResult(error, results){
@@ -41,7 +33,7 @@ function gotResult(error, results){
 }
 
 function draw(){
-    image(video1, 0,0, width, height) 
+    image(img, 0,0, width, height) 
     
 
 
@@ -52,10 +44,8 @@ function draw(){
     // rect(230, 100, 250, 350)
 
     if (status != "") {
-        objDetector.detect(video1, gotResult);
         for (var j = 0; j < objects.length; j++) {
             document.getElementById("status").innerHTML = "Objetos detectados"
-            document.getElementById("qtdObj").innerHTML = "Quantidade de objetos detectadas: "+ objects.length
             fill("red")
             percent = floor(objects[j].confidence*100)
             text(objects[j].label+" "+percent+"%", objects[j].x, objects[j].y)
